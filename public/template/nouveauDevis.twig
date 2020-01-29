@@ -1,0 +1,216 @@
+{% extends 'layoutMain.twig' %}
+ 
+     {% block main %}
+
+     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+      <div class="d-flex justify-content-between flex-wrap  align-items-center pb-2 mb-3 border-bottom">
+        <h1 class="h2">Nouveau devis  <i class="fal fa-file-edit"></i></h1>
+       
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group mr-2">
+          </div>
+        </div>
+      </div>
+
+       <!-- 1ere ligne -->
+       <div class="row">
+
+        <!--carte client -->
+        <div class="col-xl-3 col-lg-3">
+          <div class="card shadow mb-4">
+            <!-- Card Header - -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">Client <i class="fal fa-user"></i></h6>
+              <div class="dropdown no-arrow">
+              </div>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+              <div class="chart-pie pt-4 pb-2 d-flex flex-row   mb-1 justify-content-between">
+                {% if  not client   %}
+                <div class=" mb-0 font-weight-bold text-muted">
+                  Veuillez choisir un client 
+                </div>
+                {% else %}
+                <div class=" mb-0 font-weight-bold text-muted">
+                  {{ client.nsoc }}<br>{{client.adr1  }} <br>  {{client.cp  ~ " "  ~  client.ville }}
+                </div>
+                {% endif %}
+                
+                <div><button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalClient">Choisir</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal CLIENT  -->
+          <div class="modal fade" id="modalClient" tabindex="-1" role="dialog"  aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" >Client <i class="fal fa-user"></i> </h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <table id="client" class="table  display" style="width:100%"> 
+                    <thead class="thead-dark"> 
+                      <tr><th>Id</th><th>Nom</th> <th>Adresse</th> <th>Code Postal</th> <th>Ville</th></tr>
+                     </thead > 
+                    <tbody>
+                      {% for client in clientList %}
+                       <tr class="trClick"><td>{{client.id_client}}</td><td>{{ client.nsoc}}</td> <td>{{client.adr1}}</td><td>{{client.cp}}</td> <td>{{client.ville}}</td></tr>
+                       {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+                <form  class="form" role="form"  method="POST" action="nouveauDevis">
+                  <div class="modal-footer justify-content-between ">
+                    <div>
+                      <b><p id="selectClient">Veuillez choisir un client</p></b>
+                      <input type="hidden" name="choixClient" id="choixClient" value="">
+                    </div>
+                    <div>
+                      <button type="submit" class="btn btn-primary">Valider</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              
+            </div>
+          </div>
+       
+
+
+          <!-- Modal PRESTA  -->
+          <div class="modal fade" id="modalPresta" tabindex="-1" role="dialog"  aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" >Modal PRESTA</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  ...
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+           <!--Modal PDF-->
+           <div class="modal fade" id="modalPdf" tabindex="-1" role="dialog"  aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" >Modal Pdf</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  ...
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          
+
+        <!-- carte désignation -->
+        <div class="col-5">
+          <div class="card shadow mb-4">
+            <!-- Card Header - -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">Ajouter une Prestation <i class="fal fa-plus-circle"></i></h6>
+              <div class="dropdown no-arrow">
+              </div>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+              <div class="chart-pie pt-4 pb-2 d-flex flex-row   mb-1 justify-content-between">
+                <div class=" mb-0 font-weight-bold text-muted">Aucun client sélectionné</div>
+                <div><button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalPresta">Ajouter</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
+
+         <!-- Pdf Vieweer -->
+        <div class="col-xl-4 col-lg-5">
+          <div class="card shadow mb-4">
+
+            <!-- Card Header - -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">Valider/exporter <i class="fal fa-file-export"></i></h6>
+              <div class="dropdown no-arrow">
+              </div>
+            </div>
+
+            <!-- Card Body -->
+            <div class="card-body">
+              <div class="chart-pie pt-4 pb-2 d-flex flex-row   mb-1 justify-content-between">
+                <div class=" mb-0 font-weight-bold text-muted">Aucun client sélectionné</div>
+                <div><button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalPdf">Ajouter</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- fin 1ere ligne -->
+
+       <!-- Deuxième ligne -->
+       <div class="row">
+
+        <!-- Devis/DataTable -->
+        <div class="col-xl-10 col-lg-10">
+          <div class="card shadow mb-4">
+
+            <!-- Card Header - -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">Devis en cours <i class="fal fa-file-edit"></i></h6>
+              <div class="dropdown no-arrow">
+              </div>
+            </div>
+
+            <!-- Table -->
+            <div class="card-body">
+              <div class="chart-area">
+                 <table id="Devis" class="display table" style="width:100%"> <thead class="thead-dark"> <tr><th></th> <th>Prestation</th> <th>Désignation</th> <th>Type</th> <th>Garantie</th> <th>Quantité</th> <th>P.u HT</th> </tr> </thead> 
+                  <tbody>
+                     <tr><td class="dragDrop">1</td> <td>vente</td> <td>Ecran 24 pouces</td> <td>Occasion</td> <td>06 mois</td> <td>3</td> <td>89.20</td></tr>
+                     <tr><td class="dragDrop">2</td> <td>vente</td> <td>Zebra Zm400</td> <td>neuf</td> <td>06 mois</td> <td>2</td> <td>570,750</td></tr> 
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      
+        
+      </div>
+
+      <!-- fin deuxième ligne -->
+      
+    </main>
+     {% endblock %}
+     
+    
+  
